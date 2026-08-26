@@ -1,6 +1,7 @@
 from src.data_loader import load_data, save_data
 from src.cleaner import clean_data,validate_cleaned_data
 from src.analysis import total_sales,total_orders,total_profit,total_quantity,average_order_value,profit_margin,sales_by_category,profit_by_category,profit_by_region,sales_by_region,quantity_by_category,category_summary,regional_summary,yearly_sales,monthly_profit,monthly_sales,top_products_by_sales,top_customers_by_sales,product_performance,top_products_by_profit,correlation_analysis
+from src.visualization import category_sales_chart,monthly_sales_chart,profit_by_region_chart,top_products_sales_chart,sales_distribution_chart,sales_vs_profit_chart,correlation_heatmap,product_performance_chart
 import os
 
 filepath = input("Enter file name: ")
@@ -11,7 +12,7 @@ if not filepath.endswith(".csv"):
 filepath = os.path.join("data", filepath)
 
 df = load_data(filepath)
-1
+
 print(df.columns.tolist())
 if df is not None:
 
@@ -23,13 +24,13 @@ if df is not None:
 
     # validate_cleaned_data(df)
 
-    Total_Sales = total_sales(df)
-    print("Total  Sales :",Total_Sales)
-    print("Total profit :",total_profit(df))
-    print("Total Orders :",total_orders(df))
-    print("Total Quantity :",total_quantity(df))
-    print("Average order Value(AOV) :",average_order_value(df))
-    print("Profit Margin: ",profit_margin(df))
+    # Total_Sales = total_sales(df)
+    # print("Total  Sales :",Total_Sales)
+    # print("Total profit :",total_profit(df))
+    # print("Total Orders :",total_orders(df))
+    # print("Total Quantity :",total_quantity(df))
+    # print("Average order Value(AOV) :",average_order_value(df))
+    # print("Profit Margin: ",profit_margin(df))
     
     # print("\nSales by Category:")
     # print(sales_by_category(df))
@@ -68,6 +69,29 @@ if df is not None:
     # print("\nProduct Performance:")
     # print(product_performance(df).head(10))
 
-    print("\nCorrelation Analysis:")
-    print(correlation_analysis(df))
+    # print("\nCorrelation Analysis:")
+    # print(correlation_analysis(df))
 
+    # fig = category_sales_chart(df)
+    # fig.show()
+
+    # fig = monthly_sales_chart(df)
+    # fig.show()
+
+    # fig = profit_by_region_chart(df)
+    # fig.show()
+
+    fig = top_products_sales_chart(df,20)
+    fig.show()
+
+    # fig = sales_distribution_chart(df)
+    # fig.show()
+
+    # fig = sales_vs_profit_chart(df)
+    # fig.show()
+
+    # fig = correlation_heatmap(df)
+    # fig.show()
+
+    # fig = product_performance_chart(df)
+    # fig.show()
