@@ -1,97 +1,245 @@
-from src.data_loader import load_data, save_data
-from src.cleaner import clean_data,validate_cleaned_data
-from src.analysis import total_sales,total_orders,total_profit,total_quantity,average_order_value,profit_margin,sales_by_category,profit_by_category,profit_by_region,sales_by_region,quantity_by_category,category_summary,regional_summary,yearly_sales,monthly_profit,monthly_sales,top_products_by_sales,top_customers_by_sales,product_performance,top_products_by_profit,correlation_analysis
-from src.visualization import category_sales_chart,monthly_sales_chart,profit_by_region_chart,top_products_sales_chart,sales_distribution_chart,sales_vs_profit_chart,correlation_heatmap,product_performance_chart
+
+from src.data_loader import load_data
+from src.cleaner import clean_data
+from src.analysis import (
+    total_sales,
+    total_orders,
+    total_profit,
+    profit_margin,
+    sales_by_category,
+    profit_by_region
+)
+from src.visualization import (
+    monthly_sales_chart,
+    category_sales_chart,
+    profit_by_region_chart,
+    top_products_sales_chart
+)
 import os
+import streamlit as st
+import pandas as pd
 
-filepath = input("Enter file name: ")
+st.set_page_config(
+    page_title="Sales Analytics Dashboard",
+    page_icon="📊",
+    layout="wide"
+)
 
-if not filepath.endswith(".csv"):
-    filepath += ".csv"
+@st.cache_data
+def load_dashboard_data(filepath):
+    df = load_data(filepath)
 
-filepath = os.path.join("data", filepath)
+    if df is not None:
+        df = clean_data(df)
 
-df = load_data(filepath)
+    return df
 
-print(df.columns.tolist())
+st.title("Interactive Sales Analytics Dashboard")
+
+st.header("Sales Analysis")
+
+filepath = os.path.join("data", "cleaned_data.csv")
+
+df = load_dashboard_data(filepath)
+
 if df is not None:
 
-    df = clean_data(df)
+    st.sidebar.title("Dashboard Filters")
 
-    output_path = os.path.join("data", "cleaned_data.csv")
+    st.sidebar.divider()
 
-    save_data(df, output_path)
+    st.sidebar.subheader("Filter Data")
 
-    # validate_cleaned_data(df)
+    st.success("Data loaded successfully!")
 
-    # Total_Sales = total_sales(df)
-    # print("Total  Sales :",Total_Sales)
-    # print("Total profit :",total_profit(df))
-    # print("Total Orders :",total_orders(df))
-    # print("Total Quantity :",total_quantity(df))
-    # print("Average order Value(AOV) :",average_order_value(df))
-    # print("Profit Margin: ",profit_margin(df))
+    st.write("Dataset Shape:", df.shape)
+
+    st.subheader("Dashboard Overview")
+
+    regions = ["All"] + sorted(df["Region"].dropna().unique().tolist())
+
+    region = st.sidebar.selectbox(
+    "Select Region",
+    regions
+    )
+
+    categories = ["All"] + sorted(df["Category"].dropna().unique().tolist())
+
+    category = st.sidebar.selectbox(
+        "Select Category",
+        categories
+    )
+
+    filtered_df = df.copy()
+
+    if region != "All":
+        filtered_df = filtered_df[filtered_df["Region"] == region]
+
+    if category != "All":
+        filtered_df = filtered_df[filtered_df["Category"] == category]
+
+    min_date = df["Order.Date"].min().date()
+    max_date = df["Order.Date"].max().date()
+
+    date_range = st.sidebar.date_input(
+            "Select Date Range",
+            value=(min_date, max_date),
+            min_value=min_date,
+            max_value=max_date
+        )
+
+    st.sidebar.divider()
+
+    st.sidebar.caption("Active Filters")
+
+    st.sidebar.write(f"Region: {region}")
+    st.sidebar.write(f"Category: {category}")
+
+    if len(date_range) == 2:
+        start_date, end_date = date_range
+
+        filtered_df = filtered_df[
+            (filtered_df["Order.Date"] >= pd.to_datetime(start_date))
+            &
+            (filtered_df["Order.Date"] <= pd.to_datetime(end_date))
+        ]
+
+    if filtered_df.empty:
+
+        st.warning(
+            "No data is available for the selected filters. "
+            "Try changing the region, category, or date range."
+        )
+
+        st.stop()
+
     
-    # print("\nSales by Category:")
-    # print(sales_by_category(df))
+    # Dashboard content
+    st.caption(
+    f"Showing {len(filtered_df)} records based on the selected filters."
+)
 
-    # print("\nSales by Region:")
-    # print(sales_by_region(df))
+    sales = total_sales(filtered_df)
+    profit = total_profit(filtered_df)
+    orders = total_orders(filtered_df)
+    margin = profit_margin(filtered_df)
 
-    # print("\nProfit by Category:")
-    # print(profit_by_category(df))
+    col1,col2,col3,col4 = st.columns(4)
+    
+    #KPIs
+    col1.metric(
+        "Total Sales",
+        f"{sales:,.2f}"
+    )
 
-    # print("\nProfit by Region:")
-    # print(profit_by_region(df))
+    col2.metric(
+        "Total Profit",
+        f"{profit:,.2f}"
+    )
 
-    # print("\nQuantity by Category:")
-    # print(quantity_by_category(df))
-    # print("\nCategorical Summary: \n",category_summary(df))
-    # print("\nRegional Summary: \n",regional_summary(df)) 
-    # print("\nYearly Sales:")
-    # print(yearly_sales(df))
+    col3.metric(
+        "Total Orders",
+        f"{orders:,}"
+    )
 
-    # print("\nMonthly Sales:")
-    # print(monthly_sales(df))
+    col4.metric(
+        "Profit Margin",
+        f"{margin:.2f}%"
+    )
 
-    # print("\nMonthly Profit:")
-    # print(monthly_profit(df))
+    category_data = sales_by_category(filtered_df)
 
-    # print("\nTop Products by Sales:")
-    # print(top_products_by_sales(df))
+    best_category = category_data.loc[
+        category_data["Sales"].idxmax(),
+        "Category"
+    ]
 
-    # print("\nTop Products by Profit:")
-    # print(top_products_by_profit(df))
 
-    # print("\nTop Customers by Sales:")
-    # print(top_customers_by_sales(df))
+    region_data = profit_by_region(filtered_df)
 
-    # print("\nProduct Performance:")
-    # print(product_performance(df).head(10))
+    best_region = region_data.loc[
+        region_data["Profit"].idxmax(),
+        "Region"
+    ]
 
-    # print("\nCorrelation Analysis:")
-    # print(correlation_analysis(df))
+    
+    #Data insights
+    st.subheader("Key Insights")
 
-    # fig = category_sales_chart(df)
-    # fig.show()
+    st.write(
+        f"🏆 Highest selling category: **{best_category}**"
+    )
 
-    # fig = monthly_sales_chart(df)
-    # fig.show()
+    st.write(
+        f"📈 Most profitable region: **{best_region}**"
+    )
 
-    # fig = profit_by_region_chart(df)
-    # fig.show()
+    st.subheader("Sales Trend Over Time")
 
-    fig = top_products_sales_chart(df,20)
-    fig.show()
+    
 
-    # fig = sales_distribution_chart(df)
-    # fig.show()
+    #Visualizations
+    fig = monthly_sales_chart(filtered_df)
 
-    # fig = sales_vs_profit_chart(df)
-    # fig.show()
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
-    # fig = correlation_heatmap(df)
-    # fig.show()
+    col1, col2 = st.columns(2)
 
-    # fig = product_performance_chart(df)
-    # fig.show()
+    with col1:
+        st.subheader("Sales by Category")
+
+        fig = category_sales_chart(filtered_df)
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
+
+    with col2:
+        st.subheader("Profit by Region")
+
+        fig = profit_by_region_chart(filtered_df)
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
+
+    st.subheader("Top Products by Sales")
+
+    fig = top_products_sales_chart(
+        filtered_df,
+        n=10
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
+    
+    #Filtered Data
+    st.divider()
+
+    st.subheader("Detailed Filtered Data")
+
+    st.caption(
+        "Explore the records matching your selected filters."
+    )
+
+    st.dataframe(
+        filtered_df,
+        use_container_width=True,
+        hide_index=True
+    )
+
+else:
+        st.error("Failed to load data.")
+
+        
+
+        
+
+        
