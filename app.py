@@ -1,6 +1,6 @@
 
 from src.data_loader import load_data
-from src.cleaner import clean_data
+
 from src.analysis import (
     total_sales,
     total_orders,
@@ -9,12 +9,14 @@ from src.analysis import (
     sales_by_category,
     profit_by_region
 )
+
 from src.visualization import (
     monthly_sales_chart,
     category_sales_chart,
     profit_by_region_chart,
     top_products_sales_chart
 )
+
 import os
 import streamlit as st
 import pandas as pd
@@ -27,34 +29,30 @@ st.set_page_config(
 
 @st.cache_data
 def load_dashboard_data(filepath):
-    df = load_data(filepath)
-
-    if df is not None:
-        df = clean_data(df)
-
-    return df
+    return load_data(filepath)
+    
 
 st.title("Interactive Sales Analytics Dashboard")
 
-st.header("Sales Analysis")
+st.caption(
+    "Explore sales performance across regions, categories, products, and time."
+)
 
 filepath = os.path.join("data", "cleaned_data.csv")
 
 df = load_dashboard_data(filepath)
 
+
+    
 if df is not None:
 
     st.sidebar.title("Dashboard Filters")
 
-    st.sidebar.divider()
+    st.sidebar.caption(
+        "Use the controls below to explore the data."
+    )
 
-    st.sidebar.subheader("Filter Data")
-
-    st.success("Data loaded successfully!")
-
-    st.write("Dataset Shape:", df.shape)
-
-    st.subheader("Dashboard Overview")
+    st.subheader("Performance Overview")
 
     regions = ["All"] + sorted(df["Region"].dropna().unique().tolist())
 
@@ -98,10 +96,13 @@ if df is not None:
     if len(date_range) == 2:
         start_date, end_date = date_range
 
+        start_datetime = pd.to_datetime(start_date)
+        end_datetime = pd.to_datetime(end_date) + pd.Timedelta(days=1)
+
         filtered_df = filtered_df[
-            (filtered_df["Order.Date"] >= pd.to_datetime(start_date))
+            (filtered_df["Order.Date"] >= start_datetime)
             &
-            (filtered_df["Order.Date"] <= pd.to_datetime(end_date))
+            (filtered_df["Order.Date"] < end_datetime)
         ]
 
     if filtered_df.empty:
@@ -129,12 +130,12 @@ if df is not None:
     #KPIs
     col1.metric(
         "Total Sales",
-        f"{sales:,.2f}"
+        f"${sales:,.2f}"
     )
 
     col2.metric(
         "Total Profit",
-        f"{profit:,.2f}"
+        f"${profit:,.2f}"
     )
 
     col3.metric(
@@ -176,7 +177,6 @@ if df is not None:
 
     st.subheader("Sales Trend Over Time")
 
-    
 
     #Visualizations
     fig = monthly_sales_chart(filtered_df)
@@ -223,21 +223,32 @@ if df is not None:
     #Filtered Data
     st.divider()
 
-    st.subheader("Detailed Filtered Data")
+    st.subheader("Detailed Data")
+
+    display_columns = [
+        "Order.ID",
+        "Order.Date",
+        "Customer.Name",
+        "Region",
+        "Category",
+        "Sub.Category",
+        "Product.Name",
+        "Sales"
+    ]
 
     st.caption(
         "Explore the records matching your selected filters."
     )
 
     st.dataframe(
-        filtered_df,
+        filtered_df[display_columns],
         use_container_width=True,
         hide_index=True
     )
 
 else:
         st.error("Failed to load data.")
-
+        st.stop()
         
 
         

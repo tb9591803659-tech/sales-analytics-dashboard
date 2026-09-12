@@ -66,6 +66,16 @@ def yearly_sales(df):
         .reset_index()
     )
 
+
+def daily_sales(df):
+    return (
+        df.groupby(df["Order.Date"].dt.date)["Sales"]
+        .sum()
+        .reset_index(name="Sales")
+        .rename(columns={"Order.Date": "Date"})
+    )
+
+
 def monthly_sales(df):
     analysis_df = df.copy()
 

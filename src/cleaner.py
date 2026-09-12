@@ -88,6 +88,48 @@ def clean_data(df):
 
 
 def validate_cleaned_data(df):
+    # -------------------------------
+    # Missing columns detection
+    # -------------------------------
+    required_columns = [
+        "Category",
+        "City",
+        "Country",
+        "Customer.ID",
+        "Customer.Name",
+        "Discount",
+        "Market",
+        "Total.Orders",
+        "Order.Date",
+        "Order.ID",
+        "Order.Priority",
+        "Product.ID",
+        "Product.Name",
+        "Profit",
+        "Quantity",
+        "Region",
+        "Row.ID",
+        "Sales",
+        "Segment",
+        "Ship.Date",
+        "Ship.Mode",
+        "Shipping.Cost",
+        "State",
+        "Sub.Category",
+        "Year",
+        "Market2",
+        "weeknum"
+    ]
+
+    missing_columns = [
+        col for col in required_columns
+        if col not in df.columns
+    ]
+
+    if missing_columns:
+        print("\nMissing Required Columns:")
+        print(missing_columns)
+        return False
 
     print("\n========== DATA VALIDATION ==========")
 
@@ -148,46 +190,6 @@ def validate_cleaned_data(df):
     print("\nData Types:")
     print(df.dtypes)
 
-    # -------------------------------
-    # 9. Required Columns
-    # -------------------------------
-    required_columns = [
-        "Category",
-        "City",
-        "Country",
-        "Customer.ID",
-        "Customer.Name",
-        "Discount",
-        "Market",
-        "Record.Count",
-        "Order.Date",
-        "Order.ID",
-        "Order.Priority",
-        "Product.ID",
-        "Product.Name",
-        "Profit",
-        "Quantity",
-        "Region",
-        "Row.ID",
-        "Sales",
-        "Segment",
-        "Ship.Date",
-        "Ship.Mode",
-        "Shipping.Cost",
-        "State",
-        "Sub.Category",
-        "Year",
-        "Market2",
-        "weeknum"
-    ]
-
-    missing_columns = [
-        col for col in required_columns
-        if col not in df.columns
-    ]
-
-    print("\nMissing Required Columns:")
-    print(missing_columns)
 
     # -------------------------------
     # 10. Date Validation
@@ -238,3 +240,5 @@ def validate_cleaned_data(df):
     print(df["Product.ID"].nunique())
 
     print("\nData validation completed successfully.")
+
+    return True
