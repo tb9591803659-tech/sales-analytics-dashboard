@@ -1,35 +1,141 @@
-# 📊 Interactive Sales Analytics Dashboard
+# 📊 Sales Analytics Dashboard
 
-An interactive sales analytics dashboard built with **Python, Pandas, Plotly, and Streamlit** to explore sales performance across regions, categories, products, and time.
+An interactive sales analytics dashboard built with **Python, Pandas, NumPy, Plotly, and Streamlit** to explore sales performance, profitability, products, categories, regions, and business trends through an interactive web interface.
 
-This project demonstrates an end-to-end data analytics workflow:
+The project follows a modular and reproducible data pipeline:
 
-**Raw Data → Cleaning & Validation → Analysis → Visualization → Interactive Dashboard**
+**Raw Data → Cleaning → Validation → Analysis → Visualization → Interactive Dashboard → Deployment**
 
 ---
 
 ## 🚀 Live Demo
 
-**Coming soon**
+🔗 **Live Dashboard:**  
+YOUR-STREAMLIT-APP-URL
+
+🔗 **GitHub Repository:**  
+YOUR-GITHUB-REPO-URL
+
+> The dashboard is deployed using Streamlit Community Cloud.
 
 ---
 
 ## 📌 Project Overview
 
-This project transforms a raw sales dataset into an interactive business analytics dashboard.
+This project transforms a raw Superstore sales dataset into an interactive business analytics dashboard.
 
 The dashboard allows users to:
 
-- Explore overall sales performance
-- Analyze profit and profit margins
-- Compare sales across product categories
-- Compare profitability across regions
+- Explore sales performance
+- Analyze profitability
+- Compare regional performance
+- Compare product categories
 - Identify top-performing products
 - Analyze sales trends over time
-- Filter results by region, category, and date range
-- Explore the underlying filtered records
+- Filter data interactively
+- Inspect the underlying filtered records
 
-The project focuses on **clean code structure, reusable functions, data validation, reproducibility, and interactive visualization**.
+The project was designed with a focus on **clean data processing, modular Python code, reusable analysis functions, interactive visualization, and reproducible deployment**.
+
+---
+
+# ✨ Features
+
+## 📈 KPI Overview
+
+The dashboard provides four key performance indicators:
+
+- **Total Sales**
+- **Total Profit**
+- **Total Orders**
+- **Profit Margin**
+
+The KPIs dynamically update according to the selected filters.
+
+---
+
+## 🎛️ Interactive Filters
+
+Users can interactively filter the dashboard using:
+
+- Region
+- Date range
+
+All major dashboard components update based on the selected filters.
+
+---
+
+## 📅 Sales Trend Analysis
+
+The dashboard automatically adapts the sales trend visualization according to the selected date range.
+
+### Longer date ranges
+
+Displays:
+
+**Monthly Sales Trend**
+
+### Short date ranges
+
+Displays:
+
+**Daily Sales Trend**
+
+This makes the visualization more useful when users zoom into a smaller period.
+
+---
+
+## 🏷️ Sales by Category
+
+Visualizes total sales across product categories.
+
+This helps identify which categories contribute the most to overall revenue.
+
+---
+
+## 🌎 Profit by Region
+
+Compares total profit across different regions.
+
+This provides a quick view of regional profitability and helps identify stronger and weaker-performing regions.
+
+---
+
+## 🏆 Top Products
+
+Displays the **Top 10 Products by Sales**.
+
+Products are ranked based on their total sales contribution.
+
+---
+
+## 💡 Key Insights
+
+The dashboard provides automatically generated insights based on the currently filtered dataset.
+
+Examples include:
+
+- Highest-performing category
+- Most profitable region
+- Top-selling product
+- Overall sales performance
+
+---
+
+## 📋 Detailed Data
+
+A detailed data table allows users to inspect the records corresponding to their selected filters.
+
+Displayed information includes:
+
+- Order ID
+- Order Date
+- Customer
+- Region
+- Category
+- Sub-Category
+- Product
+- Sales
 
 ---
 
@@ -59,18 +165,69 @@ The detailed data section allows users to explore the records matching their sel
 
 ---
 
-# ✨ Features
+# 🛠️ Tech Stack
 
-## 📈 Performance KPIs
+| Technology | Purpose |
+|---|---|
+| Python | Core programming language |
+| Pandas | Data loading, cleaning, transformation, and analysis |
+| NumPy | Numerical operations |
+| Plotly | Interactive visualizations |
+| Streamlit | Dashboard and web application |
+| Git | Version control |
+| GitHub | Source code and project hosting |
+| Streamlit Community Cloud | Deployment |
 
-The dashboard provides four key performance indicators:
+---
 
-- **Total Sales**
-- **Total Profit**
-- **Total Orders**
-- **Profit Margin**
-
-Profit Margin is calculated as:
+# 🧠 Project Architecture
 
 ```text
-Profit Margin = (Total Profit / Total Sales) × 100
+                         RAW DATA
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ superstore.csv   │
+                  └──────────────────┘
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │  Data Loading    │
+                  │ data_loader.py   │
+                  └──────────────────┘
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ Data Cleaning    │
+                  │   cleaner.py     │
+                  └──────────────────┘
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ Data Validation   │
+                  │   cleaner.py     │
+                  └──────────────────┘
+                            │
+                            ▼
+                  cleaned_data.csv
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ Data Analysis    │
+                  │   analysis.py    │
+                  └──────────────────┘
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ Visualization    │
+                  │ visualization.py │
+                  └──────────────────┘
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │ Streamlit App    │
+                  │     app.py       │
+                  └──────────────────┘
+                            │
+                            ▼
+                     LIVE DASHBOARD
