@@ -1,5 +1,8 @@
 
+import os
+
 from src.data_loader import load_data
+from src.cleaner import clean_data, validate_cleaned_data
 
 from src.analysis import (
     total_sales,
@@ -38,9 +41,32 @@ st.caption(
     "Explore sales performance across regions, categories, products, and time."
 )
 
-filepath = os.path.join("data", "cleaned_data.csv")
 
-df = load_dashboard_data(filepath)
+RAW_DATA_PATH = "data/superstore.csv"
+CLEANED_DATA_PATH = "data/cleaned_data.csv"
+
+
+if not os.path.exists(CLEANED_DATA_PATH):
+
+    raw_df = load_data(RAW_DATA_PATH)
+
+    if raw_df is None:
+        st.error("Failed to load the raw dataset.")
+        st.stop()
+
+    cleaned_df = clean_data(raw_df)
+
+    if not validate_cleaned_data(cleaned_df):
+        st.error("Data validation failed.")
+        st.stop()
+
+    cleaned_df.to_csv(
+        CLEANED_DATA_PATH,
+        index=False
+    )
+
+
+df = load_dashboard_data(CLEANED_DATA_PATH)
 
 
     
