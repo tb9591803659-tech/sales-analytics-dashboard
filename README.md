@@ -11,10 +11,10 @@ The project follows a modular and reproducible data pipeline:
 ## 🚀 Live Demo
 
 🔗 **Live Dashboard:**  
-[YOUR-STREAMLIT-APP-URL](https://sales-analytics-dashboard-fhl2miiq2o4x6ka3ehvyey.streamlit.app/)
+[SALES-ANALYTICS-DASHBOARD-URL](https://sales-analytics-dashboard-fhl2miiq2o4x6ka3ehvyey.streamlit.app/)
 
 🔗 **GitHub Repository:**  
-[SALES-ANALYTICS-DASHBOARD-URL](https://github.com/tb9591803659-tech/sales-analytics-dashboard)
+[GITHUB-REPO-URL](https://github.com/tb9591803659-tech/sales-analytics-dashboard)
 
 > The dashboard is deployed using Streamlit Community Cloud.
 
