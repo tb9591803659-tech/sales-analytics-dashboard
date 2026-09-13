@@ -255,7 +255,7 @@ Complete step-by-step instructions to set up, prepare data, and run the applicat
 
 ---
 
-### Clone the Repository
+### Step 1 : Clone the Repository
 
 Clone the project from GitHub and navigate into the project directory:
 
@@ -264,26 +264,48 @@ git clone [https://github.com/tb9591803659-tech/sales-analytics-dashboard.git](h
 cd sales-analytics-dashboard
 ```
 
-# Create virtual environment
+### Step 2 : Create virtual environment
+
+Isolate dependencies using Python's built-in venv module.
+
+```bash
 python -m venv .venv
+```
 
-# Activate virtual environment
+#### Activate virtual environment
+```bash
 .venv\Scripts\activate
+```
 
-# Create virtual environment
+#### Create virtual environment
+```bash
 python3 -m venv .venv
+```
 
-# Activate virtual environment
+#### Activate virtual environment
+```bash
 source .venv/bin/activate
+```
 
-# Install required dependencies
+### Step 3 : Install required dependencies
+
+Install the required packages listed in requirements.txt:  
+
+```bash
 pip install -r requirements.txt
+```
 
-# Run Data Preparation Pipeline
+### Step 4 : Run Data Preparation Pipeline
+```bash
 python prepare_data.py
+```
 
-# Launch the Streamlit Dashboard
+### Step 5 : Launch the Streamlit Dashboard
+```bash
 streamlit run app.py
+```
+
+---
 
 ## 👨‍💻 Author
 
