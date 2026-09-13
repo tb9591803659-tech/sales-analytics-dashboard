@@ -113,7 +113,7 @@ Interactive data explorer allowing users to inspect individual transaction recor
 
 ## 🧠 Project Architecture
 
-```text
+
                          RAW DATA
                             │
                             ▼
@@ -165,26 +165,30 @@ Interactive data explorer allowing users to inspect individual transaction recor
                             ▼
                      LIVE DASHBOARD
 
-📁 Repository Structure
+---
+
+## 📁 Repository Structure
+
+
 Sales Analytics Dashboard/
 │
 ├── data/
-│   └── superstore.csv             # Raw transactional retail dataset
+│   └── superstore.csv
 │
 ├── screenshots/
-│   ├── dashboard-charts.png       # Analytical visual section preview
-│   ├── dashboard-data.png         # Tabular data explorer preview
-│   └── dashboard-overview.png     # Primary KPI and overview preview
+│   ├── dashboard-charts.png
+│   ├── dashboard-data.png
+│   └── dashboard-overview.png
 │
 ├── src/
-│   ├── __init__.py                # Package initialization marker
-│   ├── analysis.py                # Reusable analytical aggregations and metrics
-│   ├── cleaner.py                 # Cleaning functions and structural data validation
-│   ├── data_loader.py             # CSV ingestion, error handling, and datetime parsing
-│   └── visualization.py          # Modular Plotly chart generation routines
+│   ├── __init__.py
+│   ├── analysis.py
+│   ├── cleaner.py
+│   ├── data_loader.py
+│   └── visualization.py
 │
-├── .gitignore                     # Repository hygiene configuration
-├── app.py                         # Main Streamlit web application interface
-├── prepare_data.py                # Standalone data preparation batch script
-├── README.md                      # Comprehensive project documentation
-└── requirements.txt               # Application environment dependencies
+├── .gitignore
+├── app.py
+├── prepare_data.py
+├── README.md
+└── requirements.txt
